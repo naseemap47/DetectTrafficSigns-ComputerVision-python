@@ -28,8 +28,32 @@ if PLOT:
 
 # Training
 if TRAIN:
+    # Preprocessing
     train_generators, val_generators, test_generators = create_generators(
         64, 43, x_train, y_train, x_val, y_val, x_test, y_test
     )
-    
+
+    # Callbacks
+    early_stopping = EarlyStopping(
+        min_delta=0.001,
+        patience=10,
+        mode='min',
+        restore_best_weights=True,
+        verbose=1
+    )
+
+    # Model
+    model = trafficSign_model(no_classes=43)
+    model.compile(
+        optimizer='adam',
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    model.fit(
+        train_generators,
+        batch_size=32,
+        epochs=50,
+        validation_data=val_generators,
+        callbacks=[early_stopping]
+    )
 
