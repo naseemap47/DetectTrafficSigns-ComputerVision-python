@@ -48,13 +48,13 @@ def create_generators(batch_size, no_class,
 
     # Preprocessor
     train_preprocessor = ImageDataGenerator(
-        rescale=1/255,
+        rescale=1 / 255,
         rotation_range=10,
         width_shift_range=0.1,
         height_shift_range=0.1
     )
-    val_preprocessor = ImageDataGenerator(rescale=1/255)
-    test_preprocessor = ImageDataGenerator(rescale=1/255)
+    val_preprocessor = ImageDataGenerator(rescale=1 / 255)
+    test_preprocessor = ImageDataGenerator(rescale=1 / 255)
     train_generators = train_preprocessor.flow(
         x_train, y_train,
         batch_size=batch_size,
@@ -71,3 +71,19 @@ def create_generators(batch_size, no_class,
         shuffle=False
     )
     return train_generators, val_generators, test_generators
+
+
+def plot_history(history):
+    plt.figure(1)
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.legend(['training', 'validation'])
+    plt.title('loss')
+    plt.xlabel('epoch')
+    plt.figure(2)
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.legend(['training', 'validation'])
+    plt.title('Acurracy')
+    plt.xlabel('epoch')
+    plt.show()
