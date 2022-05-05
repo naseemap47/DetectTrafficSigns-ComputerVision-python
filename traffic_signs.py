@@ -1,12 +1,17 @@
 from my_utils import data_to_list
 from sklearn.model_selection import train_test_split
-from my_utils import plot_training_data, create_generators
+from my_utils import plot_training_data, create_generators, plot_history
 from deeplearing_model import trafficSign_model
 from keras.callbacks import EarlyStopping
+import os
 
+#################################
 # Switches
 PLOT = False
 TRAIN = True
+HISTORY_PLOT = True
+SAVE = True
+#################################
 
 # All image data into a single list
 image_list, class_no = data_to_list(
@@ -49,7 +54,7 @@ if TRAIN:
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
-    model.fit(
+    history = model.fit(
         train_generators,
         batch_size=32,
         epochs=50,
@@ -57,3 +62,14 @@ if TRAIN:
         callbacks=[early_stopping]
     )
 
+if HISTORY_PLOT:
+    plot_history(history)
+
+if SAVE:
+    # Save Model in a h5 format
+    if os.path.isfile(
+            '/home/naseem/PycharmProjects/DetectTrafficSigns-ComputerVision-python/Model.h5'
+    ) is False:
+        model.save(
+            '/home/naseem/PycharmProjects/DetectTrafficSigns-ComputerVision-python/Model.h5'
+        )
