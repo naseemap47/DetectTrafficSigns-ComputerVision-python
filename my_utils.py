@@ -1,6 +1,8 @@
 import os
 import cv2
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def data_to_list(path_to_data):
@@ -17,3 +19,18 @@ def data_to_list(path_to_data):
     images = np.array(images)
     class_no = np.array(class_no)
     return images, class_no
+
+
+def plot_training_data(no_class, x_train, y_train):
+    num_of_samples = []
+    for j in range(0, no_class):
+        x_selected = x_train[y_train == j]
+        num_of_samples.append(len(x_selected))
+
+    # print(num_of_samples)
+    plt.figure(figsize=(12, 4))
+    plt.bar(range(0, no_class), num_of_samples)
+    plt.title("Distribution of the training dataset")
+    plt.xlabel("Class number")
+    plt.ylabel("Number of images")
+    plt.show()
